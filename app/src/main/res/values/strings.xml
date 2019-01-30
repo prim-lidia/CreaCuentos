@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TaleCreate</string>
+    <string name="create_label">Create or edit your own interactive tale</string>
+    <string name="view_tales_label">View tales</string>
+    <string name="see_tale">See</string>
+    <string name="my_tales">My tales</string>
+    <string name="new_tale">New tale</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="upload_image">Upload image</string>
+    <string name="author">Author</string>
+    <string name="illustrator">Illustratior</string>
+    <string name="category">Category</string>
+    <string name="front_image">Front image</string>
+    <string-array
+        name="categories">
+        <item>2-5 years</item>
+        <item>5-9 years</item>
+        <item>9-12 years</item>
+        <item>upper to 12 years</item>
+    </string-array>
+    <string name="scenes">Scenes</string>
+    <string name="save_progress">Save progress</string>
+</resources>

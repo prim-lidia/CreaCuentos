@@ -1,0 +1,22 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryTopDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColor">@color/primary_text</item>
+        <item name="android:editTextStyle">@style/CustomEditText</item>
+        <item name="android:buttonStyle">@style/Button.NotAllCaps</item>
+    </style>
+
+    <style name="Button.NotAllCaps" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="CustomEditText" parent="Widget.AppCompat.EditText">
+        <item name="android:layout_marginRight">-2dp</item>
+        <item name="android:layout_marginLeft">-2dp</item>
+    </style>
+</resources>

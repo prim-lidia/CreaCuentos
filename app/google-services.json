@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "148631176013",
+    "firebase_url": "https://creacuentos.firebaseio.com",
+    "project_id": "creacuentos",
+    "storage_bucket": "creacuentos.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:148631176013:android:7f52952a806812c3",
+        "android_client_info": {
+          "package_name": "org.ieselcaminas.pmdm.creacuento"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "148631176013-tp1ak4eodkik6d9uujb9agpi3kp0e0nk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.ieselcaminas.pmdm.creacuento",
+            "certificate_hash": "7a094cba0c2195361428cc475c437d6b71526a54"
+          }
+        },
+        {
+          "client_id": "148631176013-notiaopalvog1cgvui3tpt87gjiahoa6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJXbQUCMm6Z90idFYD32LQLcO7Mffd1lM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "148631176013-notiaopalvog1cgvui3tpt87gjiahoa6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

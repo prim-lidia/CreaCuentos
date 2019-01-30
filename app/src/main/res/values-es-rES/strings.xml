@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TaleCreate</string>
+    <string name="create_label">Crea o edita tu propio cuento interactivo</string>
+    <string name="view_tales_label" translatable="false">Ver cuentos</string>
+    <string name="see_tale">Ver</string>
+    <string name="my_tales">Mis cuentos</string>
+    <string name="new_tale" translatable="false">Crear cuento</string>
+    <string name="title" translatable="false">Titulo</string>
+    <string name="description" translatable="false">Descripcion</string>
+    <string name="upload_image">Subir imagen</string>
+    <string name="author">Autor</string>
+    <string name="illustrator">Ilustrador</string>
+    <string name="category">Categoria</string>
+    <string name="front_image">Imagen de portada</string>
+    <string-array
+        name="categories">
+        <item>2-5 años</item>
+        <item>5-9 años</item>
+        <item>9-12 años</item>
+        <item>Mas de 12 años</item>
+    </string-array>
+    <string name="save_progress">Guardar progreso</string>
+    <string name="scenes">Escenas</string>
+</resources>

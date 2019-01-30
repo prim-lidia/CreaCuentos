@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="title_size">20sp</dimen>
+    <dimen name="regular_text_size">14sp</dimen>
+    <dimen name="side_margins">16dp</dimen>
+    <dimen name="side_margins_text_input_layout">13dp</dimen>
+</resources>
