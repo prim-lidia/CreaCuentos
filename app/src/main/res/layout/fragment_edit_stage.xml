@@ -21,6 +21,31 @@
             android:id="@+id/sceneImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/side_margins"
+                android:layout_marginTop="@dimen/side_margins"
+                android:text="@string/stages"
+                style="@style/TextAppearance.AppCompat.Medium"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+ Add stage"
+                android:layout_gravity="right"/>
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/stageList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/side_margins"
+            android:layout_marginRight="@dimen/side_margins"></ListView>
     </ScrollView>
     <LinearLayout
         android:layout_width="20dp"

@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class TaleDetailFragment extends Fragment {
     private Tale tale = null;
     public TaleDetailFragment() {
@@ -35,6 +37,7 @@ public class TaleDetailFragment extends Fragment {
 
     public void setTaleInfo(Tale tale2){
         tale = tale2;
+        String[] categories = getActivity().getResources().getStringArray(R.array.categories);
         ImageView detailImage = (ImageView) getView().findViewById(R.id.detailImageView);
         TextView detailTitle = (TextView) getView().findViewById(R.id.detailTitle);
         TextView detailCategory = (TextView) getView().findViewById(R.id.detailCategory);
@@ -44,7 +47,7 @@ public class TaleDetailFragment extends Fragment {
 
         detailTitle.setText(tale.getTitle());
         detailAuthor.setText(tale.getAuthor());
-        detailCategory.setText(tale.getCategory());
+        detailCategory.setText(categories[tale.getCategory()]);
         detailIllustrator.setText(tale.getIllustrationAuthor());
         detailDescription.setText(tale.getDescription());
 

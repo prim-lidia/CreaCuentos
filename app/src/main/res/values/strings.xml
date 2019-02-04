@@ -15,6 +15,7 @@
     <string name="front_image">Front image</string>
     <string name="email" translatable="false">e-mail</string>
     <string name="password" translatable="false">Password</string>
+    <string name="option_text">Option text</string>
     <string-array
         name="categories">
         <item>2-5 years</item>
@@ -22,6 +23,7 @@
         <item>9-12 years</item>
         <item>upper to 12 years</item>
     </string-array>
-    <string name="scenes">Scenes</string>
-    <string name="save_progress">Save progress</string>
+    <string name="stages">Stages</string>
+    <string name="stage">Stage</string>
+    <string name="next_step">Continue</string>
 </resources>

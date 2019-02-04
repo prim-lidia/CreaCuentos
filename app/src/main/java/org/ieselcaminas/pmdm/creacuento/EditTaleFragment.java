@@ -29,12 +29,24 @@ public class EditTaleFragment extends Fragment {
     private Tale tale;
     private StorageReference storageRef;
     public EditTaleFragment(){}
+    private String[] categories;
+    private EditText editTextTitle;
+    private ImageView imageViewFrontImage;
+    private EditText editTextAuthor;
+    private EditText editTextIllustrator;
+    private EditText editTextDescription;
+    private Spinner spinner;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         storageRef = FirebaseStorage.getInstance().getReference();
         // Inflate the layout for this fragment
         View viewRoot = inflater.inflate(R.layout.fragment_edit_tale, container, false);
+        editTextTitle = (EditText) viewRoot.findViewById(R.id.editTitle);
+        imageViewFrontImage = (ImageView) viewRoot.findViewById(R.id.frontImage);
+        editTextAuthor = (EditText) viewRoot.findViewById(R.id.editAuthor);
+        editTextIllustrator = (EditText) viewRoot.findViewById(R.id.editIllustrator);
+        editTextDescription = (EditText) viewRoot.findViewById(R.id.editDescription);
 
         //Get dimension form imageView
         ImageView imageView = viewRoot.findViewById(R.id.frontImage);
@@ -58,12 +70,20 @@ public class EditTaleFragment extends Fragment {
             }
         });
 
-
-        Spinner spinner=(Spinner) viewRoot.findViewById(R.id.spinnerCategories);
-        String[] categories = getActivity().getResources().getStringArray(R.array.categories);
+        //Categories
+        spinner=(Spinner) viewRoot.findViewById(R.id.spinnerCategories);
+        categories = getActivity().getResources().getStringArray(R.array.categories);
         ArrayAdapter<String> adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,categories);
-
         spinner.setAdapter(adapter);
+
+
+        Button buttonNext = viewRoot.findViewById(R.id.buttonContinue);
+        buttonNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setTale(true);
+            }
+        });
 
         return viewRoot;
     }
@@ -72,33 +92,42 @@ public class EditTaleFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if(savedInstanceState!=null){
-            tale = (Tale) savedInstanceState.get(TALE_TAG);
+            if(savedInstanceState.get(TALE_TAG) != null) {
+                tale = (Tale) savedInstanceState.get(TALE_TAG);
+            }
             setTaleInfo(tale);
+        }else {
+            tale = new Tale();
         }
     }
 
     public void setTaleInfo(Tale tale2){
         tale = tale2;
+        editTextTitle.setText(tale.getTitle());
+        editTextAuthor.setText(tale.getAuthor());
+        editTextDescription.setText(tale.getDescription());
+        editTextIllustrator.setText(tale.getIllustrationAuthor());
+    }
 
-        EditText titleEditext = (EditText) getView().findViewById(R.id.edit_title);
-        titleEditext.setText(tale.getTitle());
-        /*ImageView detailImage = (ImageView) getView().findViewById(R.id.detailImageView);
-        TextView detailTitle = (TextView) getView().findViewById(R.id.detailTitle);
-        TextView detailCategory = (TextView) getView().findViewById(R.id.detailCategory);
-        TextView detailAuthor = (TextView) getView().findViewById(R.id.detailAuthor);
-        TextView detailIllustrator = (TextView) getView().findViewById(R.id.detailIllustrator);
-        TextView detailDescription = (TextView) getView().findViewById(R.id.detailText);
-
-        detailTitle.setText(tale.getTitle());
-        detailAuthor.setText(tale.getAuthor());
-        detailCategory.setText(tale.getCategory());
-        detailIllustrator.setText(tale.getIllustrationAuthor());
-        detailDescription.setText(tale.getDescription());*/
-
+    public void setTaleInfo(String keyTale){
+        tale = new Tale();
+        tale.setToken(keyTale);
+        editTextTitle.setText(tale.getTitle());
+        editTextAuthor.setText(tale.getAuthor());
+        editTextDescription.setText(tale.getDescription());
+        editTextIllustrator.setText(tale.getIllustrationAuthor());
+    }
+    public void setTale(Boolean finished){
+        tale.setTitle(editTextTitle.getText().toString());
+        tale.setAuthor((editTextTitle.getText().toString()));
+        tale.setIllustrationAuthor((editTextIllustrator.getText().toString()));
+        tale.setCategory(spinner.getSelectedItemPosition());
+        tale.setDescription(editTextDescription.getText().toString());
     }
 
     @Override
     public void onSaveInstanceState(Bundle bundle) {
+        setTale(false);
         bundle.putSerializable(TALE_TAG, tale);
         super.onSaveInstanceState(bundle);
 

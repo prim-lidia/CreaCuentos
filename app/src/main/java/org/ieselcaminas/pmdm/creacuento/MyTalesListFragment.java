@@ -48,6 +48,10 @@ public class MyTalesListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        creator = mAuth.getCurrentUser().getEmail();
+        creator = creator.replace(".","_");
+        database = FirebaseDatabase.getInstance();
         taleList = new ArrayList<>();
         initList();
         // Inflate the layout for this fragment
@@ -58,7 +62,13 @@ public class MyTalesListFragment extends Fragment {
         buttonNewTale.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                communicator.setTale(null);
+                final DatabaseReference myTalesRef = database.getReference("creators/"+creator);
+                final DatabaseReference talesRef = database.getReference("tales");
+                String key = myTalesRef.push().getKey();
+                talesRef.child(key).setValue(new Tale(key));
+                myTalesRef.child(key).child("Editing").setValue(true);
+
+                communicator.setTale(new Tale(key));
             }
         });
         final RecyclerView recView = viewRoot.findViewById(R.id.my_tales_recyclerView);
@@ -115,11 +125,6 @@ public class MyTalesListFragment extends Fragment {
     }
 
     public void initList() {
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        creator = mAuth.getCurrentUser().getEmail();
-        creator = creator.replace(".","_");
-
-        database = FirebaseDatabase.getInstance();
 
         final DatabaseReference myTalesRef = database.getReference("creators/"+creator);
         Log.d("dataSnapshot",myTalesRef.toString());
@@ -127,11 +132,11 @@ public class MyTalesListFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 GenericTypeIndicator<ArrayList<Tale>> genericTypeIndicator =new GenericTypeIndicator<ArrayList<Tale>>(){};
-
+////////////////////////////////////////////REVISAR
                 ArrayList<Tale> value = dataSnapshot.getValue(genericTypeIndicator);
                 if( value != null){
                     taleList = value;
-                    Log.d("dataSnapshot",dataSnapshot.getValue().toString());
+                    Log.d("dataSnapshot",dataSnapshot.getValue()..toString());
                 }
             }
 

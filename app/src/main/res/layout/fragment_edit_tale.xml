@@ -9,7 +9,7 @@
         android:orientation="vertical">
 
         <EditText
-            android:id="@+id/edit_title"
+            android:id="@+id/editTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -36,6 +36,7 @@
             android:background="@color/divider"
             android:layout_gravity="center_horizontal" />
         <Button
+            style="@style/Button.Rounded.Primary"
             android:id="@+id/buttonUpload"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -73,7 +74,7 @@
             android:layout_marginRight="@dimen/side_margins_text_input_layout">
 
             <EditText
-                android:id="@+id/editillustrator"
+                android:id="@+id/editIllustrator"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/illustrator"
@@ -105,7 +106,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/scenes"
+                android:text="@string/category"
                 android:layout_marginRight="16dp"
                 style="@style/TextAppearance.AppCompat.Medium"/>
             <Spinner
@@ -114,11 +115,16 @@
                 android:layout_height="match_parent"/>
         </LinearLayout>
         <Button
+            style="@style/Button.Rounded.Accent"
+            android:id="@+id/buttonContinue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/save_progress"
-            android:layout_gravity="center_horizontal"
+            android:text="@string/next_step"
+            android:layout_gravity="end"
             android:layout_marginTop="@dimen/side_margins"
-            android:layout_marginBottom="@dimen/side_margins"/>
+            android:layout_marginBottom="@dimen/side_margins"
+            android:layout_marginRight="@dimen/side_margins"
+            android:paddingRight="12dp"
+            android:drawableRight="@drawable/ic_navigate_next_black_24dp"/>
     </LinearLayout>
 </ScrollView>

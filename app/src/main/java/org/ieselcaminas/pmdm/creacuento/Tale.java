@@ -4,17 +4,23 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Tale implements Serializable {
+    public String token;
     public String creator;
     private String title;
     private String author;
     private String illustrationAuthor;
     private String description;
     private String frontImage;
-    private String category;
+    private int category;
     private Boolean editing;
     private ArrayList<Stage> stages;
 
-    public Tale(String title, String author, String illustrationAuthor, String description, String frontImage, String category){
+    public Tale () {}
+    public Tale (String token) {
+        this.token = token;
+    }
+
+    public Tale(String title, String author, String illustrationAuthor, String description, String frontImage, int category){
         this.title = title;
         this.author = author;
         this.illustrationAuthor = illustrationAuthor;
@@ -22,6 +28,14 @@ public class Tale implements Serializable {
         this.frontImage =  frontImage;
         this.category = category;
         //this.stages = stages;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String getCreator() {
@@ -72,11 +86,11 @@ public class Tale implements Serializable {
         this.frontImage = frontImage;
     }
 
-    public String getCategory() {
+    public int getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(int category) {
         this.category = category;
     }
 

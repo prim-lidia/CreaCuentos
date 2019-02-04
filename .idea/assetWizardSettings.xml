@@ -23,7 +23,8 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="color" value="ff5252" />
+                                                <entry key="color" value="ffffff" />
+                                                <entry key="paddingPercent" value="-10" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -34,7 +35,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="jar:file:/home/INFORMATICA/alu20470789f/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/alert/ic_error_outline_black_24dp.xml" />
+                                                <entry key="url" value="jar:file:/home/INFORMATICA/alu20470789f/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/image/ic_navigate_next_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -46,7 +47,7 @@
                                     <map>
                                       <entry key="backgroundColor" value="ff5252" />
                                       <entry key="iconShape" value="NONE" />
-                                      <entry key="outputName" value="ic_error" />
+                                      <entry key="outputName" value="ic_next" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -82,7 +83,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/home/INFORMATICA/alu20470789f/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/alert/ic_error_outline_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/home/INFORMATICA/alu20470789f/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/image/ic_navigate_next_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -92,9 +93,9 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="ff5252" />
+                            <entry key="color" value="ffffff" />
                             <entry key="height" value="18" />
-                            <entry key="outputName" value="ic_error_outline_24dp" />
+                            <entry key="outputName" value="ic_navigate_next_black_24dp" />
                             <entry key="overrideSize" value="true" />
                             <entry key="sourceFile" value="$USER_HOME$" />
                             <entry key="width" value="18" />

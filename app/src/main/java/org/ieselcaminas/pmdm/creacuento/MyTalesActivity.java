@@ -7,6 +7,7 @@ import android.os.Bundle;
 public class MyTalesActivity extends AppCompatActivity implements MyTalesListFragment.Communicator{
 
     public static String TAG_TALE = "tale";
+    public static String TAG_TALE_TEXT = "tale";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

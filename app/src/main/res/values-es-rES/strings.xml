@@ -13,6 +13,7 @@
     <string name="illustrator">Ilustrador</string>
     <string name="category">Categoria</string>
     <string name="front_image">Imagen de portada</string>
+    <string name="option_text">Texto a mostrar como opcion</string>
     <string-array
         name="categories">
         <item>2-5 años</item>
@@ -20,6 +21,7 @@
         <item>9-12 años</item>
         <item>Mas de 12 años</item>
     </string-array>
-    <string name="save_progress">Guardar progreso</string>
-    <string name="scenes">Escenas</string>
+    <string name="next_step">Continuar</string>
+    <string name="stages">Escenas</string>
+    <string name="stage">Escena</string>
 </resources>
