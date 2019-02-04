@@ -1,6 +1,7 @@
 package org.ieselcaminas.pmdm.creacuento;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,6 +25,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import static org.ieselcaminas.pmdm.creacuento.R.drawable.ic_error_outline_24dp;
+
 public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
@@ -43,9 +46,7 @@ public class LoginActivity extends AppCompatActivity {
 
         Button buttonSignUp = findViewById(R.id.buttonSignUp);
         Button buttonSignIn = findViewById(R.id.buttonSignIn);
-        SignInButton buttonSignInGoogle = findViewById(R.id.buttonSignInGoogle);
-
-        buttonSignUp.setOnClickListener(new View.OnClickListener() {
+                buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 singUp();
@@ -58,7 +59,12 @@ public class LoginActivity extends AppCompatActivity {
                 singIn();
             }
         });
+        signInWithGoogle();
+    }
 
+    private void signInWithGoogle() {
+        SignInButton buttonSignInGoogle = findViewById(R.id.buttonSignInGoogle);
+        buttonSignInGoogle.setSize(0);
         buttonSignInGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,63 +77,88 @@ public class LoginActivity extends AppCompatActivity {
                 startActivityForResult(signInIntent, RC_SIGN_IN);
             }
         });
+
     }
 
     private void singUp() {
-        mAuth.createUserWithEmailAndPassword(editEmail.getText().toString(),editPassword.getText().toString()).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()){
-                    Log.d(TAG,"createUserWithEmail:success");
-                    final FirebaseUser user=mAuth.getCurrentUser();
-                    user.sendEmailVerification()
-                            .addOnCompleteListener(LoginActivity.this, new OnCompleteListener() {
-                                @Override
-                                public void onComplete(@NonNull Task task) {
-                                    // Re-enable button
-                                    findViewById(R.id.buttonSignUp).setEnabled(true);
 
-                                    if (task.isSuccessful()) {
-                                        Toast.makeText(LoginActivity.this,
-                                                "Verification email sent to " + user.getEmail(),
-                                                Toast.LENGTH_SHORT).show();
-                                        finish();
+        if (editEmail.getText().toString().equals("") || editPassword.getText().toString().equals("")) {
+            showRequiredErrors();
+        } else {
+            mAuth.createUserWithEmailAndPassword(editEmail.getText().toString(), editPassword.getText().toString()).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "createUserWithEmail:success");
+                        final FirebaseUser user = mAuth.getCurrentUser();
+                        user.sendEmailVerification()
+                                .addOnCompleteListener(LoginActivity.this, new OnCompleteListener() {
+                                    @Override
+                                    public void onComplete(@NonNull Task task) {
+                                        // Re-enable button
+                                        findViewById(R.id.buttonSignUp).setEnabled(true);
 
-                                    } else {
-                                        Log.e(TAG, "sendEmailVerification", task.getException());
-                                        Toast.makeText(LoginActivity.this,
-                                                "Failed to send verification email.",
-                                                Toast.LENGTH_SHORT).show();
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(LoginActivity.this,
+                                                    "Verification email sent to " + user.getEmail(),
+                                                    Toast.LENGTH_SHORT).show();
+                                            finish();
+
+                                        } else {
+                                            Log.e(TAG, "sendEmailVerification", task.getException());
+                                            Toast.makeText(LoginActivity.this,
+                                                    "Failed to send verification email.",
+                                                    Toast.LENGTH_SHORT).show();
+                                        }
                                     }
-                                }
-                            });
-                }else{
-                    Log.w(TAG,"createUserWithEmail:failure", task.getException());
-                    Toast.makeText(LoginActivity.this, "Authetication failed"+task.getException().getLocalizedMessage(),Toast.LENGTH_SHORT).show();
+                                });
+                    } else {
+                        Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                        Toast.makeText(LoginActivity.this, "Authetication failed" + task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     private void singIn() {
-        mAuth.signInWithEmailAndPassword(editEmail.getText().toString(), editPassword.getText().toString())
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            finish();
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+        if(editEmail.getText().toString().equals("") || editPassword.getText().toString().equals("")) {
+            showRequiredErrors();
+            Toast.makeText(LoginActivity.this, "Authentication failed. Fields are required", Toast.LENGTH_SHORT).show();;
+        } else{
+            mAuth.signInWithEmailAndPassword(editEmail.getText().toString(), editPassword.getText().toString())
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d(TAG, "signInWithEmail:success");
+                                FirebaseUser user = mAuth.getCurrentUser();
+
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
                             finish();
                         }
-                    }
-                });
+                    });
+        }
+
+    }
+
+    private void showRequiredErrors() {
+        Drawable myIcon = getResources().getDrawable(R.drawable.ic_error_outline_24dp);
+        myIcon.setBounds(0, 0, myIcon.getIntrinsicWidth(), myIcon.getIntrinsicHeight());
+        if (editEmail.getText().toString().equals("")) {
+            editEmail.setError("Email is required", myIcon);
+        }
+
+        Toast.makeText(LoginActivity.this, "Creating user failed. Fields are required", Toast.LENGTH_SHORT).show();
+        if (editPassword.getText().toString().equals("")){
+            editPassword.setError("Password is required", myIcon);
+        }
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {

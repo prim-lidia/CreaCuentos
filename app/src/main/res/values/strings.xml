@@ -10,9 +10,11 @@
     <string name="description">Description</string>
     <string name="upload_image">Upload image</string>
     <string name="author">Author</string>
-    <string name="illustrator">Illustratior</string>
+    <string name="illustrator">Illustrator</string>
     <string name="category">Category</string>
     <string name="front_image">Front image</string>
+    <string name="email" translatable="false">e-mail</string>
+    <string name="password" translatable="false">Password</string>
     <string-array
         name="categories">
         <item>2-5 years</item>

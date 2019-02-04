@@ -1,44 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".LoginActivity"
-    android:layout_margin="24dp">
+    android:padding="24dp"
+    android:background="@drawable/gradient_dark_primary">
 
     <EditText
+        style="@style/EditText.Login"
+        android:layout_marginTop="100dp"
         android:id="@+id/editTextEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="email"
+        android:hint="@string/email"
+        android:drawableStart="@drawable/ic_person_white_24dp"
+        android:drawableLeft="@drawable/ic_person_white_24dp"
         android:inputType="textEmailAddress" />
 
     <EditText
+        style="@style/EditText.Login"
         android:id="@+id/editTextPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Password"
-        android:inputType="textPassword" />
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:drawableStart="@drawable/ic_lock_white_24dp"
+        android:drawableLeft="@drawable/ic_lock_white_24dp"
+        android:layout_marginBottom="@dimen/side_margins"/>
 
     <Button
+        style="@style/Button.Rounded.White"
+        android:layout_marginBottom="@dimen/side_margins"
         android:id="@+id/buttonSignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Sing up" />
 
     <Button
+        style="@style/Button.Rounded.White"
+        android:layout_marginBottom="@dimen/side_margins"
         android:id="@+id/buttonSignIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Sign in" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/side_margins">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:background="@color/fiftyWhite"
+            android:layout_weight="3"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OR"
+            android:gravity="center"
+            android:layout_weight="1"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:background="@color/fiftyWhite"
+            android:layout_weight="3"/>
+    </LinearLayout>
 
     <com.google.android.gms.common.SignInButton
-        android:id="@+id/buttonSignInGoogle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+            android:id="@+id/buttonSignInGoogle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
 
 </LinearLayout>
