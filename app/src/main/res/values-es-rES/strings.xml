@@ -24,4 +24,8 @@
     <string name="next_step">Continuar</string>
     <string name="stages">Escenas</string>
     <string name="stage">Escena</string>
+    <string name="cancel">Cancelar</string>
+    <string name="delete_btn_text">Borrar</string>
+    <string name="delete_confirmation_desc">¿Esta seguro de que desea eliminar este Cuento? Esta accion no se puede deshacer.</string>
+    <string name="delete_confirmation_title">Borrar cuento</string>
 </resources>

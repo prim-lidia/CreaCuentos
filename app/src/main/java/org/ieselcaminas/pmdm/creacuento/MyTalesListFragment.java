@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,6 +29,7 @@ import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -43,6 +45,7 @@ public class MyTalesListFragment extends Fragment {
 
     private ArrayList<Tale> taleList;
     public MyTalesListFragment() {}
+    private MyTaleAdapter adaptador;
 
 
     @Override
@@ -65,10 +68,12 @@ public class MyTalesListFragment extends Fragment {
                 final DatabaseReference myTalesRef = database.getReference("creators/"+creator);
                 final DatabaseReference talesRef = database.getReference("tales");
                 String key = myTalesRef.push().getKey();
-                talesRef.child(key).setValue(new Tale(key));
-                myTalesRef.child(key).child("Editing").setValue(true);
+                Tale newTale = new Tale(key, creator);
+                Log.d("Cuentos Crear", key +", "+newTale.getCreator());
+                talesRef.child(key).setValue(new Tale(key, creator));
+                myTalesRef.child(key).setValue(new Tale(key, creator));
 
-                communicator.setTale(new Tale(key));
+                communicator.setTale(new Tale(key, creator));
             }
         });
         final RecyclerView recView = viewRoot.findViewById(R.id.my_tales_recyclerView);
@@ -77,7 +82,7 @@ public class MyTalesListFragment extends Fragment {
         recView.setHasFixedSize(true);
         recView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
-        final MyTaleAdapter adaptador = new MyTaleAdapter(taleList);
+        adaptador = new MyTaleAdapter(taleList);
         recView.setAdapter(adaptador);
         recView.setLayoutManager(new LinearLayoutManager(viewRoot.getContext(), LinearLayoutManager.VERTICAL, false));
         recView.setItemAnimator(new DefaultItemAnimator());
@@ -86,6 +91,7 @@ public class MyTalesListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Tale tale = taleList.get(recView.getChildAdapterPosition(v));
+                Log.d("Cuentos comunicator", tale.getCreator());
                 communicator.setTale(tale);
                 /*MyTalesListFragment fragment2 = new Fragment2();
                 Bundle args = new Bundle();
@@ -124,34 +130,38 @@ public class MyTalesListFragment extends Fragment {
         }
     }
 
+
     public void initList() {
-
         final DatabaseReference myTalesRef = database.getReference("creators/"+creator);
-        Log.d("dataSnapshot",myTalesRef.toString());
-        myTalesRef.addValueEventListener(new ValueEventListener() {
+        myTalesRef.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                GenericTypeIndicator<ArrayList<Tale>> genericTypeIndicator =new GenericTypeIndicator<ArrayList<Tale>>(){};
-////////////////////////////////////////////REVISAR
-                ArrayList<Tale> value = dataSnapshot.getValue(genericTypeIndicator);
-                if( value != null){
-                    taleList = value;
-                    Log.d("dataSnapshot",dataSnapshot.getValue()..toString());
-                }
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Tale tale = dataSnapshot.getValue(Tale.class);
+                adaptador.addItem(tale);
             }
-
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Tale tale = dataSnapshot.getValue(Tale.class);
+                adaptador.updateItem(tale);
+            }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                /*Tale tale = dataSnapshot.getValue(Tale.class);
+                adaptador.addItem(tale);*/
+            }
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
             }
         });
 
-        /*taleList =  myTales;
-        //Recoger datos de firebase
-        Tale tale1 = new Tale("Titulo1", "Autor Autor", "Autor ilustracion", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", "NombreFichero", "De 0-3 años");
+        /*//Recoger datos de firebase
+        Tale tale1 = new Tale("sssss","Titulo1", "Autor Autor", "Autor ilustracion", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", "NombreFichero", 1);
         tale1.setEditing(true);
         taleList.add(tale1);
-        Tale tale2 = new Tale("Titulo2", "Autor Autor", "Autor ilustracion", "Este libro NUM 2 trata de bla bla bla....", "NombreFichero", "De 4-8 años");
+        Tale tale2 = new Tale("aaaaa", "Titulo2", "Autor Autor", "Autor ilustracion", "Este libro NUM 2 trata de bla bla bla....", "NombreFichero", 2);
         tale2.setEditing(false);
         taleList.add(tale2);*/
     }

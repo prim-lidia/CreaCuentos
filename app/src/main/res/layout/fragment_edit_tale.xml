@@ -41,25 +41,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/upload_image"
-            android:layout_marginTop="@dimen/side_margins"
-            android:layout_marginLeft="@dimen/side_margins"
-            android:layout_marginRight="@dimen/side_margins"/>
+            android:layout_margin="@dimen/side_margins"/>
 
         <android.support.design.widget.TextInputLayout
             style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/side_margins_text_input_layout"
-            android:layout_marginRight="@dimen/side_margins_text_input_layout"
-            android:padding="0dp"
-            android:paddingLeft="0dp"
-            android:paddingTop="0dp"
-            android:paddingRight="0dp"
-            android:paddingBottom="0dp">
+            android:layout_marginRight="@dimen/side_margins_text_input_layout">
 
             <EditText
                 android:id="@+id/editAuthor"
-                style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/author"

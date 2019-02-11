@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Tale implements Serializable {
-    public String token;
-    public String creator;
+    private String token;
+    private String creator;
     private String title;
     private String author;
     private String illustrationAuthor;
@@ -15,12 +15,32 @@ public class Tale implements Serializable {
     private Boolean editing;
     private ArrayList<Stage> stages;
 
-    public Tale () {}
-    public Tale (String token) {
+    public Tale () {
+        this.token = null;
+        this.title = null;
+        this.author = null;
+        this.illustrationAuthor = null;
+        this.description = null;
+        this.frontImage = null;
+        this.category = -1;
+        this.editing = true;
+        this.stages = new ArrayList<Stage>();
+    }
+    public Tale (String token, String creator) {
         this.token = token;
+        this.creator = creator;
+        /*this.title = "";
+        this.author = "";
+        this.illustrationAuthor = "";
+        this.description = null;
+        this.frontImage = null;*/
+        this.category = -1;
+        this.editing = true;
+        this.stages = new ArrayList<Stage>();
     }
 
-    public Tale(String title, String author, String illustrationAuthor, String description, String frontImage, int category){
+    public Tale(String token, String title, String author, String illustrationAuthor, String description, String frontImage, int category){
+        this.token = token;
         this.title = title;
         this.author = author;
         this.illustrationAuthor = illustrationAuthor;
@@ -37,6 +57,7 @@ public class Tale implements Serializable {
     public void setToken(String token) {
         this.token = token;
     }
+
 
     public String getCreator() {
         return creator;

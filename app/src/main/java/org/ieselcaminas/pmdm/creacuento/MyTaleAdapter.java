@@ -1,13 +1,21 @@
 package org.ieselcaminas.pmdm.creacuento;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.provider.ContactsContract;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -22,25 +30,35 @@ public class MyTaleAdapter extends RecyclerView.Adapter<MyTaleAdapter.MyViewHold
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        private ImageView imageView;
+        private ImageView ImageViewIcon;
         private TextView titleTextView;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            imageView = (ImageView) itemView.findViewById(R.id.imageView);
+            ImageViewIcon = (ImageView) itemView.findViewById(R.id.imageView);
             titleTextView = (TextView) itemView.findViewById(R.id.item_tale_title);
+
         }
 
 
         public void bindTitular(final Tale tale) {
             int icon = -1;
+
             if(tale.getEditing()){
-                icon = R.mipmap.ic_checked;
-            }else{
                 icon = R.mipmap.ic_editing;
+            }else{
+                icon = R.mipmap.ic_checked;
+
             }
-            imageView.setImageResource(icon);
+            ImageViewIcon.setImageResource(icon);
             titleTextView.setText(tale.getTitle());
+            ImageView iconDelete = (ImageView) itemView.findViewById(R.id.delete);
+            iconDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openDeleteDialog(v , tale);
+                }
+            });
 
         }
     }
@@ -74,5 +92,67 @@ public class MyTaleAdapter extends RecyclerView.Adapter<MyTaleAdapter.MyViewHold
         if (listener != null) {
             listener.onClick(view);
         }
+    }
+
+    public void addItem(Tale tale) {
+        items.add(tale);
+        notifyItemInserted(items.size());
+    }
+
+    public void removeItem(Tale tale) {
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference myTaleRef = database.getReference("creators/"+tale.getCreator()+"/"+tale.getToken());
+        final DatabaseReference taleRef = database.getReference("tales/"+tale.getToken());
+        for(int i= 0; i<items.size(); i++) {
+            Log.d("Cuentos", String.valueOf(items.get(i).equals(tale)));
+            if (items.get(i).equals(tale)) {
+                items.remove(i);
+                notifyItemRemoved(i);
+                notifyItemRangeChanged(i, items.size());
+                myTaleRef.removeValue();
+                taleRef.removeValue();
+                break;
+            }
+        }
+
+    }
+
+    public void updateItem(Tale tale){
+        for(int i= 0; i<items.size(); i++) {
+            Log.d("Cuentos", String.valueOf(items.get(i).equals(tale)));
+            if (items.get(i).getToken().equals(tale.getToken())) {
+                items.set(i, tale);
+                notifyItemChanged(i);
+                break;
+            }
+        }
+    }
+
+    public void openDeleteDialog(final View view, final Tale tale){
+        Context context = view.getContext();
+        AlertDialog dialog = new AlertDialog.Builder(context)
+                //.setIcon()
+                .setTitle(context.getResources().getString(R.string.delete_confirmation_title))
+                .setMessage(context.getResources().getString(R.string.delete_confirmation_desc))
+                .setPositiveButton(context.getResources().getString(R.string.delete_btn_text),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                removeItem(tale);
+                                Toast.makeText(view.getContext(),
+                                        "OK clicked!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                )
+                .setNegativeButton(context.getResources().getString(R.string.cancel),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                Toast.makeText(view.getContext(),
+                                        "Cancel clicked!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                )
+                .create();
+        dialog.show();
     }
 }

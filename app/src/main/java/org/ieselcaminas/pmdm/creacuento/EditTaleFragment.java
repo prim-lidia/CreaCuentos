@@ -19,6 +19,8 @@ import android.widget.Spinner;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -39,6 +41,8 @@ public class EditTaleFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        tale = new Tale();
         storageRef = FirebaseStorage.getInstance().getReference();
         // Inflate the layout for this fragment
         View viewRoot = inflater.inflate(R.layout.fragment_edit_tale, container, false);
@@ -96,8 +100,6 @@ public class EditTaleFragment extends Fragment {
                 tale = (Tale) savedInstanceState.get(TALE_TAG);
             }
             setTaleInfo(tale);
-        }else {
-            tale = new Tale();
         }
     }
 
@@ -109,20 +111,22 @@ public class EditTaleFragment extends Fragment {
         editTextIllustrator.setText(tale.getIllustrationAuthor());
     }
 
-    public void setTaleInfo(String keyTale){
-        tale = new Tale();
-        tale.setToken(keyTale);
-        editTextTitle.setText(tale.getTitle());
-        editTextAuthor.setText(tale.getAuthor());
-        editTextDescription.setText(tale.getDescription());
-        editTextIllustrator.setText(tale.getIllustrationAuthor());
-    }
     public void setTale(Boolean finished){
+        Log.d("Cuentos SET TALE", this.tale.getCreator());
         tale.setTitle(editTextTitle.getText().toString());
         tale.setAuthor((editTextTitle.getText().toString()));
         tale.setIllustrationAuthor((editTextIllustrator.getText().toString()));
         tale.setCategory(spinner.getSelectedItemPosition());
         tale.setDescription(editTextDescription.getText().toString());
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        Log.d("Cuentos", "creators/"+tale.getCreator()+"/"+tale.getToken());
+        Log.d("Cuentos", "tales/"+tale.getToken());
+        final DatabaseReference myTaleRef = database.getReference("creators/"+tale.getCreator()+"/"+tale.getToken());
+        final DatabaseReference taleRef = database.getReference("tales/"+tale.getToken());
+        myTaleRef.setValue(tale);
+        taleRef.setValue(tale);
+
     }
 
     @Override

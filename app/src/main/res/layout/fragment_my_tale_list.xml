@@ -7,7 +7,9 @@
         android:id="@+id/buttonNewTale"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/new_tale"/>
+        android:text="@string/new_tale"
+        android:layout_marginRight="@dimen/side_margins"
+        android:layout_marginLeft="@dimen/side_margins"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/my_tales_recyclerView"
