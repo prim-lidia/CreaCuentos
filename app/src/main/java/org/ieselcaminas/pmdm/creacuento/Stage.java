@@ -4,13 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Stage {
+    Boolean completed;
+    String token;
     String title;
     String image;
     String text;
     HashMap<String, String> options;
     ArrayList<String> previousStages;
 
-    public Stage(String title, String prev){
+    public Stage(String token, String title, String prev){
+        this.token = token;
         this.title = title;
         this.image = null;
         this.text = null;
@@ -18,7 +21,8 @@ public class Stage {
         this.previousStages =  new ArrayList<>();
         previousStages.add(prev);
     }
-    public Stage(String title, String image, String text, HashMap<String, String> options, ArrayList<String> previousStages) {
+    public Stage(String token, String title, String image, String text, HashMap<String, String> options, ArrayList<String> previousStages) {
+        this.token = token;
         this.title = title;
         this.image = image;
         this.text = text;

@@ -86,8 +86,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/description"
+                android:singleLine="false"
                 android:imeOptions="actionNext"
-                android:inputType="textCapSentences" />
+                android:minLines="1"
+                android:maxLines="10"/>
         </android.support.design.widget.TextInputLayout>
         <LinearLayout
             android:layout_width="match_parent"

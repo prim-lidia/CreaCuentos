@@ -114,7 +114,7 @@ public class EditTaleFragment extends Fragment {
     public void setTale(Boolean finished){
         Log.d("Cuentos SET TALE", this.tale.getCreator());
         tale.setTitle(editTextTitle.getText().toString());
-        tale.setAuthor((editTextTitle.getText().toString()));
+        tale.setAuthor((editTextAuthor.getText().toString()));
         tale.setIllustrationAuthor((editTextIllustrator.getText().toString()));
         tale.setCategory(spinner.getSelectedItemPosition());
         tale.setDescription(editTextDescription.getText().toString());
@@ -126,7 +126,6 @@ public class EditTaleFragment extends Fragment {
         final DatabaseReference taleRef = database.getReference("tales/"+tale.getToken());
         myTaleRef.setValue(tale);
         taleRef.setValue(tale);
-
     }
 
     @Override
