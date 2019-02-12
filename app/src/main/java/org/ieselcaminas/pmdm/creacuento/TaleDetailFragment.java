@@ -1,12 +1,19 @@
 package org.ieselcaminas.pmdm.creacuento;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -30,13 +37,25 @@ public class TaleDetailFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         if(savedInstanceState!=null){
             tale = (Tale) savedInstanceState.get("tale");
-            setTaleInfo(tale);
+            setTaleInfo(tale.getId());
         }
 
     }
 
-    public void setTaleInfo(Tale tale2){
-        tale = tale2;
+    public void setTaleInfo(String taleId){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference taleRef = database.getReference("tales/"+taleId);
+        taleRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                tale = dataSnapshot.getValue(Tale.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         String[] categories = getActivity().getResources().getStringArray(R.array.categories);
         ImageView detailImage = (ImageView) getView().findViewById(R.id.detailImageView);
         TextView detailTitle = (TextView) getView().findViewById(R.id.detailTitle);

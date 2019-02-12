@@ -18,7 +18,7 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
         <fragment
-            android:id="@+id/my_tales_list_Fragment"
+            android:id="@+id/my_tales_list_fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"

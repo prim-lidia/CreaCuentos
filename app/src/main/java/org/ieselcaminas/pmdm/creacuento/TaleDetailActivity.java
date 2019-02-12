@@ -20,11 +20,11 @@ public class TaleDetailActivity extends AppCompatActivity {
 
         if (extras != null) {
 
-            Tale tale = (Tale) extras.get(ViewTalesActivity.TALE);
+            String taleId = extras.getString(ViewTalesActivity.TAG_TALE);
             TaleDetailFragment detailFragment =
                     (TaleDetailFragment) getSupportFragmentManager()
                             .findFragmentById(R.id.detail_Fragment); // the id in detail_activity.xml
-            detailFragment.setTaleInfo(tale);
+            detailFragment.setTaleInfo(taleId);
         }
     }
 }

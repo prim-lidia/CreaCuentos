@@ -34,14 +34,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/divider"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:scaleType="centerCrop"/>
+        <Button
+            style="@style/Button.Rounded.Primary"
+            android:id="@+id/buttonChooseImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/chose_image"
+            android:layout_margin="@dimen/side_margins"/>
         <Button
             style="@style/Button.Rounded.Primary"
             android:id="@+id/buttonUpload"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/upload_image"
-            android:layout_margin="@dimen/side_margins"/>
+            android:layout_margin="@dimen/side_margins"
+            android:visibility="gone"/>
 
         <android.support.design.widget.TextInputLayout
             style="@style/TextAppearance.AppCompat.Medium"

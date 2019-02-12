@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Tale implements Serializable {
-    private String token;
+    private String idTale;
     private String creator;
     private String title;
     private String author;
@@ -16,46 +16,35 @@ public class Tale implements Serializable {
     private ArrayList<Stage> stages;
 
     public Tale () {
-        this.token = null;
-        this.title = null;
-        this.author = null;
-        this.illustrationAuthor = null;
-        this.description = null;
-        this.frontImage = null;
         this.category = -1;
         this.editing = true;
         this.stages = new ArrayList<Stage>();
     }
-    public Tale (String token, String creator) {
-        this.token = token;
+    public Tale (String idTale, String creator) {
+        this.idTale = idTale;
         this.creator = creator;
-        /*this.title = "";
-        this.author = "";
-        this.illustrationAuthor = "";
-        this.description = null;
-        this.frontImage = null;*/
         this.category = -1;
         this.editing = true;
         this.stages = new ArrayList<Stage>();
     }
 
-    public Tale(String token, String title, String author, String illustrationAuthor, String description, String frontImage, int category){
-        this.token = token;
+    public Tale(String idTale, String title, String author, String illustrationAuthor, String description, String frontImage, int category){
+        this.idTale = idTale;
         this.title = title;
         this.author = author;
         this.illustrationAuthor = illustrationAuthor;
         this.description = description;
         this.frontImage =  frontImage;
         this.category = category;
-        //this.stages = stages;
+        this.stages = new ArrayList<Stage>();
     }
 
-    public String getToken() {
-        return token;
+    public String getId() {
+        return idTale;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setId(String idTale) {
+        this.idTale = idTale;
     }
 
 

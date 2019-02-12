@@ -30,4 +30,5 @@
     <string name="delete_btn_text">Delete</string>
     <string name="delete_confirmation_desc">Are you sure to want remove this tale? this action cannot be undone</string>
     <string name="delete_confirmation_title">Delete tale?</string>
+    <string name="chose_image">Choose image</string>
 </resources>

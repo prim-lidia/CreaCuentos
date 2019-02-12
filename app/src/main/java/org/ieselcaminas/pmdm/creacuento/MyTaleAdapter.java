@@ -102,8 +102,8 @@ public class MyTaleAdapter extends RecyclerView.Adapter<MyTaleAdapter.MyViewHold
     public void removeItem(Tale tale) {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference myTaleRef = database.getReference("creators/"+tale.getCreator()+"/"+tale.getToken());
-        final DatabaseReference taleRef = database.getReference("tales/"+tale.getToken());
+        final DatabaseReference myTaleRef = database.getReference("creators/"+tale.getCreator()+"/"+tale.getId());
+        final DatabaseReference taleRef = database.getReference("tales/"+tale.getId());
         for(int i= 0; i<items.size(); i++) {
             Log.d("Cuentos", String.valueOf(items.get(i).equals(tale)));
             if (items.get(i).equals(tale)) {
@@ -121,7 +121,7 @@ public class MyTaleAdapter extends RecyclerView.Adapter<MyTaleAdapter.MyViewHold
     public void updateItem(Tale tale){
         for(int i= 0; i<items.size(); i++) {
             Log.d("Cuentos", String.valueOf(items.get(i).equals(tale)));
-            if (items.get(i).getToken().equals(tale.getToken())) {
+            if (items.get(i).getId().equals(tale.getId())) {
                 items.set(i, tale);
                 notifyItemChanged(i);
                 break;
@@ -132,8 +132,8 @@ public class MyTaleAdapter extends RecyclerView.Adapter<MyTaleAdapter.MyViewHold
     public void openDeleteDialog(final View view, final Tale tale){
         Context context = view.getContext();
         AlertDialog dialog = new AlertDialog.Builder(context)
-                //.setIcon()
-                .setTitle(context.getResources().getString(R.string.delete_confirmation_title))
+                .setIcon(context.getResources().getDrawable(R.drawable.ic_help_blue_24dp))
+                .setTitle(context.getString(R.string.delete_confirmation_title))
                 .setMessage(context.getResources().getString(R.string.delete_confirmation_desc))
                 .setPositiveButton(context.getResources().getString(R.string.delete_btn_text),
                         new DialogInterface.OnClickListener() {

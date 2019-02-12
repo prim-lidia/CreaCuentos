@@ -1,8 +1,9 @@
 package org.ieselcaminas.pmdm.creacuento;
 
 public class StageOption {
+    private String idStage;
     private int number;
-    private String code;
+    private String title;
     private String option;
 
     public int getNumber() {
@@ -13,12 +14,12 @@ public class StageOption {
         this.number = number;
     }
 
-    public String getCode() {
-        return code;
+    public String getId() {
+        return idStage;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setId(String idStage) {
+        this.idStage = idStage;
     }
 
     public String getOption() {

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class TaleListFragment extends ListFragment {
     public interface Communicator {
-        public void setTale(Tale tale);
+        public void setTale(String taleId);
     }
 
     private Communicator communicator;
@@ -55,7 +55,7 @@ public class TaleListFragment extends ListFragment {
         //        "You have selected " + presidents[position], Toast.LENGTH_SHORT).show();
         Tale tale = (Tale)   parent.getItemAtPosition(position);
         Log.d("taleCom", tale.getTitle());
-        communicator.setTale(tale);
+        communicator.setTale(tale.getId());
     }
 
     private void initList(ArrayList<Tale> androidList) {

@@ -6,12 +6,11 @@
     tools:context=".MainActivity"
     android:orientation="vertical">
 
-    <fragment
+    <LinearLayout
         android:id="@+id/edit_tale_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        class="org.ieselcaminas.pmdm.creacuento.EditTaleFragment" >
-    </fragment>
+        android:orientation="vertical">
+    </LinearLayout>
 
 </LinearLayout>

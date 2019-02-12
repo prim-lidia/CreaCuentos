@@ -28,4 +28,5 @@
     <string name="delete_btn_text">Borrar</string>
     <string name="delete_confirmation_desc">¿Esta seguro de que desea eliminar este Cuento? Esta accion no se puede deshacer.</string>
     <string name="delete_confirmation_title">Borrar cuento</string>
+    <string name="chose_image">Seleccionar imagen</string>
 </resources>

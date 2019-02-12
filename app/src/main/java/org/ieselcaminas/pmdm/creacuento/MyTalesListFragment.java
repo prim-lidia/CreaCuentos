@@ -2,6 +2,7 @@ package org.ieselcaminas.pmdm.creacuento;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,6 +27,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -35,14 +37,9 @@ import java.util.Objects;
 
 
 public class MyTalesListFragment extends Fragment {
-    public interface Communicator {
-        void setTale(Tale tale);
-    }
-    private  String creator;
+
+    private  String currentUID;
     private FirebaseDatabase database;
-
-    private Communicator communicator;
-
     private ArrayList<Tale> taleList;
     public MyTalesListFragment() {}
     private MyTaleAdapter adaptador;
@@ -51,9 +48,6 @@ public class MyTalesListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        creator = mAuth.getCurrentUser().getEmail();
-        creator = creator.replace(".","_");
         database = FirebaseDatabase.getInstance();
         taleList = new ArrayList<>();
         initList();
@@ -65,15 +59,11 @@ public class MyTalesListFragment extends Fragment {
         buttonNewTale.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final DatabaseReference myTalesRef = database.getReference("creators/"+creator);
                 final DatabaseReference talesRef = database.getReference("tales");
-                String key = myTalesRef.push().getKey();
-                Tale newTale = new Tale(key, creator);
+                String key = talesRef.push().getKey();
+                Tale newTale = new Tale(key, currentUID);
                 Log.d("Cuentos Crear", key +", "+newTale.getCreator());
-                talesRef.child(key).setValue(new Tale(key, creator));
-                myTalesRef.child(key).setValue(new Tale(key, creator));
-
-                communicator.setTale(new Tale(key, creator));
+                talesRef.child(key).setValue(new Tale(key, currentUID));
             }
         });
         final RecyclerView recView = viewRoot.findViewById(R.id.my_tales_recyclerView);
@@ -92,48 +82,21 @@ public class MyTalesListFragment extends Fragment {
             public void onClick(View v) {
                 Tale tale = taleList.get(recView.getChildAdapterPosition(v));
                 Log.d("Cuentos comunicator", tale.getCreator());
-                communicator.setTale(tale);
-                /*MyTalesListFragment fragment2 = new Fragment2();
-                Bundle args = new Bundle();
-                args.putInt("Imagen", img);
-                fragment2.setArguments(args);
-                Transition slide = TransitionInflater.from(getActivity()).inflateTransition(R.transition.slide);
-                Transition fade = TransitionInflater.from(getActivity()).inflateTransition(R.transition.fade);
-                fragment2.setSharedElementEnterTransition(slide);
-                fragment2.setSharedElementReturnTransition(fade);
-                final View idlogo = v.findViewById(R.id.imageView);
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentReceiver, fragment2)
-                        .addToBackStack(null)
-                        .addSharedElement(idlogo, idlogo.getTransitionName())
-                        .commit();*/
+                startEditActivityFragment(tale.getId());
             }
         });
 
         return viewRoot;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        Activity activity;
-
-        if (context instanceof Activity){
-            activity = (Activity) context;
-            if (activity instanceof Communicator) {
-                communicator = (Communicator) activity;
-            } else {
-                throw new ClassCastException(activity.toString()
-                        + " must implement MyTalesListFragment.Communicator");
-            }
-        }
-    }
-
-
     public void initList() {
-        final DatabaseReference myTalesRef = database.getReference("creators/"+creator);
-        myTalesRef.addChildEventListener(new ChildEventListener() {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        currentUID = mAuth.getCurrentUser().getUid();
+        final DatabaseReference talesRef = database.getReference("tales");
+        Query myTales = talesRef.orderByChild("creator").equalTo(currentUID);
+
+        Log.d("Cuentos", currentUID);
+        myTales.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Tale tale = dataSnapshot.getValue(Tale.class);
@@ -157,4 +120,22 @@ public class MyTalesListFragment extends Fragment {
             }
         });
     }
+
+    public void startEditActivityFragment(String taleId){
+        EditTaleFragment editTaleFragment = (EditTaleFragment) getActivity().getSupportFragmentManager()
+                .findFragmentById(R.id.edit_tale_fragment);
+
+        if (editTaleFragment != null && editTaleFragment.isInLayout()) {
+            Bundle args =  new Bundle();
+            args.putString("taleId", taleId);
+            editTaleFragment.setArguments(args);
+        } else {
+            Intent intent = new Intent(getContext(), EditTaleActivity.class);
+            if(taleId != null && !taleId.equals("")) {
+                intent.putExtra(MyTalesActivity.TAG_TALE,taleId);
+            }
+            startActivity(intent);
+        }
+    }
+
 }

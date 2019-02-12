@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 public class ViewTalesActivity extends AppCompatActivity implements  TaleListFragment.Communicator{
-    public static String TALE = "tale";
+    public static String TAG_TALE = "taleId";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -14,15 +14,15 @@ public class ViewTalesActivity extends AppCompatActivity implements  TaleListFra
     }
 
     @Override
-    public void setTale(Tale tale) {
+    public void setTale(String taleId) {
         TaleDetailFragment detailfragment = (TaleDetailFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.detail_Fragment);
-        Log.d("taleCom", "taleView "+tale.getTitle());
+        Log.d("taleCom", "taleView "+taleId);
         if (detailfragment != null && detailfragment.isInLayout()) {
-            detailfragment.setTaleInfo(tale);
+            detailfragment.setTaleInfo(taleId);
         } else {
             Intent intent = new Intent(getApplicationContext(), TaleDetailActivity.class);
-            intent.putExtra(TALE,tale);
+            intent.putExtra(TAG_TALE,taleId);
             startActivity(intent);
         }
     }
