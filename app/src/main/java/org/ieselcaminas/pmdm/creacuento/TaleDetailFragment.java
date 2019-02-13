@@ -3,6 +3,7 @@ package org.ieselcaminas.pmdm.creacuento;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,13 @@ import java.util.ArrayList;
 
 public class TaleDetailFragment extends Fragment {
     private Tale tale = null;
+    private ImageView detailImage;
+    private TextView detailTitle;
+    private TextView detailCategory;
+    private TextView detailAuthor;
+    private TextView detailIllustrator;
+    private TextView detailDescription;
+
     public TaleDetailFragment() {
         // Required empty public constructor
     }
@@ -29,6 +37,21 @@ public class TaleDetailFragment extends Fragment {
         // Inflate the layout for this fragment
         View viewRoot = inflater.inflate(R.layout.fragment_tale_detail, container, false);
 
+        detailImage = (ImageView) viewRoot.findViewById(R.id.detailImageView);
+        detailTitle = (TextView) viewRoot.findViewById(R.id.detailTitle);
+        detailCategory = (TextView) viewRoot.findViewById(R.id.detailCategory);
+        detailAuthor = (TextView) viewRoot.findViewById(R.id.detailAuthor);
+        detailIllustrator = (TextView) viewRoot.findViewById(R.id.detailIllustrator);
+        detailDescription = (TextView) viewRoot.findViewById(R.id.detailText);
+
+        Bundle args = getArguments();
+        if (args != null) {
+            String taleId = args.getString(MyTalesActivity.TAG_TALE);
+            setTaleInfo(taleId);
+        }
+
+
+
         return viewRoot;
     }
 
@@ -36,19 +59,28 @@ public class TaleDetailFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if(savedInstanceState!=null){
-            tale = (Tale) savedInstanceState.get("tale");
-            setTaleInfo(tale.getId());
-        }
+            if(savedInstanceState.get(MyTalesActivity.TAG_TALE) != null) {
+                String taleId = savedInstanceState.getString(MyTalesActivity.TAG_TALE);
+                setTaleInfo(taleId);
+            }
 
+        }
     }
 
     public void setTaleInfo(String taleId){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference taleRef = database.getReference("tales/"+taleId);
-        taleRef.addValueEventListener(new ValueEventListener() {
+        taleRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 tale = dataSnapshot.getValue(Tale.class);
+                String[] categories = getActivity().getResources().getStringArray(R.array.categories);
+                Log.d("Cuentos", tale.getTitle());
+                detailTitle.setText(tale.getTitle());
+                detailAuthor.setText(tale.getAuthor());
+                detailCategory.setText(categories[tale.getCategory()]);
+                detailIllustrator.setText(tale.getIllustrationAuthor());
+                detailDescription.setText(tale.getDescription());
             }
 
             @Override
@@ -56,25 +88,11 @@ public class TaleDetailFragment extends Fragment {
 
             }
         });
-        String[] categories = getActivity().getResources().getStringArray(R.array.categories);
-        ImageView detailImage = (ImageView) getView().findViewById(R.id.detailImageView);
-        TextView detailTitle = (TextView) getView().findViewById(R.id.detailTitle);
-        TextView detailCategory = (TextView) getView().findViewById(R.id.detailCategory);
-        TextView detailAuthor = (TextView) getView().findViewById(R.id.detailAuthor);
-        TextView detailIllustrator = (TextView) getView().findViewById(R.id.detailIllustrator);
-        TextView detailDescription = (TextView) getView().findViewById(R.id.detailText);
-
-        detailTitle.setText(tale.getTitle());
-        detailAuthor.setText(tale.getAuthor());
-        detailCategory.setText(categories[tale.getCategory()]);
-        detailIllustrator.setText(tale.getIllustrationAuthor());
-        detailDescription.setText(tale.getDescription());
-
     }
 
     @Override
     public void onSaveInstanceState(Bundle bundle) {
-        bundle.putSerializable("tale", tale);
+        bundle.putSerializable(MyTalesActivity.TAG_TALE, tale);
         super.onSaveInstanceState(bundle);
 
     }

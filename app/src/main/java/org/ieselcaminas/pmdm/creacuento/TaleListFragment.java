@@ -1,6 +1,7 @@
 package org.ieselcaminas.pmdm.creacuento;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
@@ -9,14 +10,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+
 import java.util.ArrayList;
 
 public class TaleListFragment extends ListFragment {
-    public interface Communicator {
-        public void setTale(String taleId);
-    }
-
-    private Communicator communicator;
+    private TaleAdapter adapter;
+    private FirebaseDatabase database;
+    private ArrayList<Tale> taleList;
     public TaleListFragment() {
         // Required empty public constructor
     }
@@ -31,41 +38,79 @@ public class TaleListFragment extends ListFragment {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ArrayList<Tale> taleList = new ArrayList<Tale>();
-        initList(taleList);
+        taleList = new ArrayList<Tale>();
 
-        final TaleAdapter adapter = new TaleAdapter(getActivity(),R.layout.tale_info,taleList);
+        database =FirebaseDatabase.getInstance();
+        initList();
+
+        adapter = new TaleAdapter(getActivity(),R.layout.tale_info,taleList);
         setListAdapter(adapter);
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        if (activity instanceof Communicator) {
-            communicator = (Communicator) activity;
-        } else {
-            throw new ClassCastException(activity.toString()
-                    + " must implement ListFragmentVersions.AndroidVersionReceiver");
-        }
-    }
 
     @Override
     public void onListItemClick(ListView parent, View v, int position, long id) {
         //Toast.makeText(getActivity(),
         //        "You have selected " + presidents[position], Toast.LENGTH_SHORT).show();
         Tale tale = (Tale)   parent.getItemAtPosition(position);
-        Log.d("taleCom", tale.getTitle());
-        communicator.setTale(tale.getId());
+        startTaleDetailActivityFragment(tale.getId());
     }
 
-    private void initList(ArrayList<Tale> androidList) {
-        //Recoger datos de firebase
-        Tale tale1 = new Tale("sssss","Titulo1", "Autor Autor", "Autor ilustracion", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", "NombreFichero", 1);
-        tale1.setEditing(true);
-        androidList.add(tale1);
-        Tale tale2 = new Tale("aaaaa", "Titulo2", "Autor Autor", "Autor ilustracion", "Este libro NUM 2 trata de bla bla bla....", "NombreFichero", 2);
-        tale2.setEditing(false);
-        androidList.add(tale2);
+    public void initList() {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        final DatabaseReference talesRef = database.getReference("tales");
+        talesRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Tale tale = dataSnapshot.getValue(Tale.class);
+                adapter.add(tale);
+            }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Tale tale = dataSnapshot.getValue(Tale.class);
+                for(int i=0; i< taleList.size(); i++ ) {
+                    if (taleList.get(i).getId().equals(tale.getId())) {
+                        taleList.set(i, tale);
+                        adapter.notifyDataSetChanged();
+                        break;
+                    }
+                }
+            }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                Tale tale = dataSnapshot.getValue(Tale.class);
+               for (int i = 0; i < taleList.size(); i++) {
+                   if (taleList.get(i).getId().equals(tale.getId())) {
+                       adapter.remove(adapter.getItem(i));
+                       break;
+                   }
+
+               }
+            }
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
+
+    public void startTaleDetailActivityFragment(String taleId){
+        TaleDetailFragment taleDetaileFragment = (TaleDetailFragment) getActivity().getSupportFragmentManager()
+                .findFragmentById(R.id.detail_tale_fragment);
+
+        if (taleDetaileFragment != null && taleDetaileFragment.isInLayout()) {
+            Bundle args =  new Bundle();
+            args.putString("taleId", taleId);
+            taleDetaileFragment.setArguments(args);
+        } else {
+            Intent intent = new Intent(getContext(), TaleDetailActivity.class);
+            if(taleId != null && !taleId.equals("")) {
+                intent.putExtra(ViewTalesActivity.TAG_TALE,taleId);
+            }
+            startActivity(intent);
+        }
     }
 
 }

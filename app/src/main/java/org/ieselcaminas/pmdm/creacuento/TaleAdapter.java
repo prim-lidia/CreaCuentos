@@ -47,4 +47,9 @@ public class TaleAdapter extends ArrayAdapter<Tale> {
         }
         return  v;
     }
+
+    public void addItem(Tale tale) {
+        add(tale);
+
+    }
 }
