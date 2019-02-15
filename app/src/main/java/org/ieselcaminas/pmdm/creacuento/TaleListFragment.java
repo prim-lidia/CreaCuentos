@@ -1,13 +1,20 @@
 package org.ieselcaminas.pmdm.creacuento;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ListFragment;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -48,12 +55,13 @@ public class TaleListFragment extends ListFragment {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onListItemClick(ListView parent, View v, int position, long id) {
         //Toast.makeText(getActivity(),
         //        "You have selected " + presidents[position], Toast.LENGTH_SHORT).show();
         Tale tale = (Tale)   parent.getItemAtPosition(position);
-        startTaleDetailActivityFragment(tale.getId());
+        startTaleDetailActivityFragment(tale.getId(), v);
     }
 
     public void initList() {
@@ -96,7 +104,13 @@ public class TaleListFragment extends ListFragment {
         });
     }
 
-    public void startTaleDetailActivityFragment(String taleId){
+    public void startTaleDetailActivityFragment(String taleId, View v){
+        final View sharedimageview = v.findViewById(R.id.imageView);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            sharedimageview.setTransitionName(getResources().getString(R.string.image_trans));
+        }
+
         TaleDetailFragment taleDetaileFragment = (TaleDetailFragment) getActivity().getSupportFragmentManager()
                 .findFragmentById(R.id.detail_tale_fragment);
 
@@ -104,12 +118,26 @@ public class TaleListFragment extends ListFragment {
             Bundle args =  new Bundle();
             args.putString("taleId", taleId);
             taleDetaileFragment.setArguments(args);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                Transition changeBounds = TransitionInflater.from(getActivity()).inflateTransition(R.transition.changebounds);
+                taleDetaileFragment.setSharedElementEnterTransition(changeBounds);
+                taleDetaileFragment.setSharedElementReturnTransition(changeBounds);
+            }
+
+
         } else {
             Intent intent = new Intent(getContext(), TaleDetailActivity.class);
             if(taleId != null && !taleId.equals("")) {
                 intent.putExtra(ViewTalesActivity.TAG_TALE,taleId);
             }
-            startActivity(intent);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                Pair<View, String> p1 = new Pair(sharedimageview, sharedimageview.getTransitionName());
+                Bundle options = ActivityOptions.makeSceneTransitionAnimation(getActivity(), p1).toBundle();
+                startActivity(intent, options);
+            } else {
+                startActivity(intent);
+            }
+
         }
     }
 

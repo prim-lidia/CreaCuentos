@@ -8,6 +8,13 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColor">@color/primary_text</item>
         <item name="android:editTextStyle">@style/CustomEditText</item>
+
+        <!-- specify shared element transitions -->
+        <item name="android:windowSharedElementEnterTransition" tools:targetApi="lollipop">
+            @transition/changebounds</item>
+        <item name="android:windowSharedElementExitTransition" tools:targetApi="lollipop">
+            @transition/changebounds</item>
+
     </style>
     <!-- Button styles -->
     <style name="Button.Rounded" parent="Base.Widget.AppCompat.Button">

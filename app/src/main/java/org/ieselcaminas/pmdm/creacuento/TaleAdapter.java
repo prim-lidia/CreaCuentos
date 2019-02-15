@@ -8,6 +8,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
 import java.util.ArrayList;
 
 public class TaleAdapter extends ArrayAdapter<Tale> {
@@ -42,7 +45,14 @@ public class TaleAdapter extends ArrayAdapter<Tale> {
             String imageID = tale.getFrontImage();
             if (imageID!= null && !imageID.equals("")) {
                 ImageView imageView = (ImageView) v.findViewById(R.id.imageView);
-                //Llamar a Firebase para coger la iamgen
+                //Download image from Firebase
+                StorageReference fileRef = FirebaseStorage.getInstance().getReferenceFromUrl(tale.getFrontImage());
+                if(tale.getFrontImage() != null) {
+                    GlideApp.with(context)
+                            .load(fileRef)
+                            .centerCrop()
+                            .into(imageView);
+                }
             }
         }
         return  v;

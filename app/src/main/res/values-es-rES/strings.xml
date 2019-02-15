@@ -21,7 +21,7 @@
         <item>9-12 años</item>
         <item>Mas de 12 años</item>
     </string-array>
-    <string name="next_step">Continuar</string>
+    <string name="next_step">Guardar y continuar</string>
     <string name="stages">Escenas</string>
     <string name="stage">Escena</string>
     <string name="cancel">Cancelar</string>
@@ -29,4 +29,5 @@
     <string name="delete_confirmation_desc">¿Esta seguro de que desea eliminar este Cuento? Esta accion no se puede deshacer.</string>
     <string name="delete_confirmation_title">Borrar cuento</string>
     <string name="chose_image">Seleccionar imagen</string>
+    <string name="save">Guardar</string>
 </resources>

@@ -1,7 +1,5 @@
 package org.ieselcaminas.pmdm.creacuento;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -20,10 +18,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
-import com.google.android.gms.tasks.Continuation;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,6 +35,7 @@ import java.io.IOException;
 public class EditTaleFragment extends Fragment {
 
     public static final int PICK_IMAGE = 12;
+    private View viewRoot;
     private Tale tale;
     private StorageReference storageRef;
     private String[] categories;
@@ -62,7 +60,7 @@ public class EditTaleFragment extends Fragment {
 
         storageRef = FirebaseStorage.getInstance().getReference();
         // Inflate the layout for this fragment
-        View viewRoot = inflater.inflate(R.layout.fragment_edit_tale, container, false);
+        viewRoot = inflater.inflate(R.layout.fragment_edit_tale, container, false);
         editTextTitle = (EditText) viewRoot.findViewById(R.id.editTitle);
         imageViewFrontImage = (ImageView) viewRoot.findViewById(R.id.frontImage);
         editTextAuthor = (EditText) viewRoot.findViewById(R.id.editAuthor);
@@ -98,15 +96,21 @@ public class EditTaleFragment extends Fragment {
         spinner.setAdapter(adapter);
 
 
+        final Button buttonSave = viewRoot.findViewById(R.id.buttonSave);
+        buttonSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateTale();
+                viewRoot.clearFocus();
+            }
+        });
+
         Button buttonNext = viewRoot.findViewById(R.id.buttonContinue);
         buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 updateTale();
-                if(filePath!= null) {
-                    uploadImage();
-                }
-
+                startEditStage(tale.getId());
             }
         });
 
@@ -126,13 +130,18 @@ public class EditTaleFragment extends Fragment {
     }
 
     public void setTaleView(String taleId){
-
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference taleRef = database.getReference("tales/"+taleId);
         taleRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 tale = dataSnapshot.getValue(Tale.class);
+                StorageReference fileRef = FirebaseStorage.getInstance().getReferenceFromUrl(tale.getFrontImage());
+                if(tale.getFrontImage() != null) {
+                    GlideApp.with(viewRoot.getContext())
+                            .load(fileRef)
+                            .into(imageViewFrontImage);
+                }
                 editTextTitle.setText(tale.getTitle());
                 editTextAuthor.setText(tale.getAuthor());
                 editTextDescription.setText(tale.getDescription());
@@ -158,6 +167,10 @@ public class EditTaleFragment extends Fragment {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference taleRef = database.getReference("tales/"+tale.getId());
         taleRef.setValue(tale);
+
+        if(filePath!= null) {
+            uploadImage();
+        }
     }
 
     @Override
@@ -232,5 +245,16 @@ public class EditTaleFragment extends Fragment {
                 }
             }
         }
+    }
+
+    public void startEditStage(String taleId){
+        EditStageFragmet editStageFragmet = new EditStageFragmet();
+        Bundle args =  new Bundle();
+        args.putString("taleId", taleId);
+        editStageFragmet.setArguments(args);
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.edit_tale_fragment, editStageFragmet)
+                .addToBackStack(null)
+                .commit();
     }
 }

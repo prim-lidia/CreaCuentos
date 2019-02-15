@@ -15,6 +15,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -76,6 +78,13 @@ public class TaleDetailFragment extends Fragment {
                 tale = dataSnapshot.getValue(Tale.class);
                 String[] categories = getActivity().getResources().getStringArray(R.array.categories);
                 Log.d("Cuentos", tale.getTitle());
+                StorageReference fileRef = FirebaseStorage.getInstance().getReferenceFromUrl(tale.getFrontImage());
+                if(tale.getFrontImage() != null) {
+                    GlideApp.with(getContext())
+                            .load(fileRef)
+                            .centerCrop()
+                            .into(detailImage);
+                }
                 detailTitle.setText(tale.getTitle());
                 detailAuthor.setText(tale.getAuthor());
                 detailCategory.setText(categories[tale.getCategory()]);

@@ -25,10 +25,12 @@
     </string-array>
     <string name="stages">Stages</string>
     <string name="stage">Stage</string>
-    <string name="next_step">Continue</string>
+    <string name="next_step">Save and continue</string>
     <string name="cancel">Cancel</string>
     <string name="delete_btn_text">Delete</string>
     <string name="delete_confirmation_desc">Are you sure to want remove this tale? this action cannot be undone</string>
     <string name="delete_confirmation_title">Delete tale?</string>
     <string name="chose_image">Choose image</string>
+    <string name="save">Save</string>
+    <string name="image_trans" translatable="false">image transition</string>
 </resources>

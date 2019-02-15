@@ -27,7 +27,7 @@ public class EditTaleActivity extends AppCompatActivity {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
             Bundle args = new Bundle();
-            args.putString(ViewTalesActivity.TAG_TALE, taleId);
+            args.putString(MyTalesActivity.TAG_TALE, taleId);
             editTaleFragment.setArguments(args);
 
             fragmentTransaction.add(R.id.edit_tale_fragment, editTaleFragment);
