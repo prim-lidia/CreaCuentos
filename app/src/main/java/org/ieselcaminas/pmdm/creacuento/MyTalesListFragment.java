@@ -60,10 +60,11 @@ public class MyTalesListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 final DatabaseReference talesRef = database.getReference("tales");
-                String key = talesRef.push().getKey();
-                Tale newTale = new Tale(key, currentUID);
-                Log.d("Cuentos Crear", key +", "+newTale.getCreator());
-                talesRef.child(key).setValue(new Tale(key, currentUID));
+                String taleId = talesRef.push().getKey();
+                Tale newTale = new Tale(taleId, currentUID);
+                Log.d("Cuentos Crear", taleId +", "+newTale.getCreator());
+                talesRef.child(taleId).setValue(new Tale(taleId, currentUID));
+                startEditActivityFragment(taleId);
             }
         });
         final RecyclerView recView = viewRoot.findViewById(R.id.my_tales_recyclerView);
@@ -81,7 +82,6 @@ public class MyTalesListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Tale tale = taleList.get(recView.getChildAdapterPosition(v));
-                Log.d("Cuentos comunicator", tale.getCreator());
                 startEditActivityFragment(tale.getId());
             }
         });
@@ -95,7 +95,6 @@ public class MyTalesListFragment extends Fragment {
         final DatabaseReference talesRef = database.getReference("tales");
         Query myTales = talesRef.orderByChild("creator").equalTo(currentUID);
 
-        Log.d("Cuentos", currentUID);
         myTales.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -109,8 +108,8 @@ public class MyTalesListFragment extends Fragment {
             }
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                /*Tale tale = dataSnapshot.getValue(Tale.class);
-                adaptador.addItem(tale);*/
+                Tale tale = dataSnapshot.getValue(Tale.class);
+                adaptador.removeItem(tale);
             }
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {

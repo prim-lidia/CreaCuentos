@@ -100,22 +100,17 @@ public class MyTaleAdapter extends RecyclerView.Adapter<MyTaleAdapter.MyViewHold
     }
 
     public void removeItem(Tale tale) {
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference myTaleRef = database.getReference("creators/"+tale.getCreator()+"/"+tale.getId());
-        final DatabaseReference taleRef = database.getReference("tales/"+tale.getId());
+        //Borrar imagenes
         for(int i= 0; i<items.size(); i++) {
-            Log.d("Cuentos", String.valueOf(items.get(i).equals(tale)));
-            if (items.get(i).equals(tale)) {
+            Log.d("Cuentos", String.valueOf(items.get(i).getId().equals(tale.getId())));
+            if (items.get(i).getId().equals(tale.getId())) {
                 items.remove(i);
                 notifyItemRemoved(i);
                 notifyItemRangeChanged(i, items.size());
-                myTaleRef.removeValue();
-                taleRef.removeValue();
+                //taleRef.removeValue();
                 break;
             }
         }
-
     }
 
     public void updateItem(Tale tale){
@@ -138,7 +133,8 @@ public class MyTaleAdapter extends RecyclerView.Adapter<MyTaleAdapter.MyViewHold
                 .setPositiveButton(context.getResources().getString(R.string.delete_btn_text),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                removeItem(tale);
+                                final DatabaseReference taleRef = FirebaseDatabase.getInstance().getReference("tales/"+tale.getId());
+                                taleRef.removeValue();
                                 Toast.makeText(view.getContext(),
                                         "OK clicked!", Toast.LENGTH_SHORT).show();
                             }

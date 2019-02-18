@@ -30,4 +30,6 @@
     <string name="delete_confirmation_title">Borrar cuento</string>
     <string name="chose_image">Seleccionar imagen</string>
     <string name="save">Guardar</string>
+    <string name="stage_text">Texto de la escena</string>
+    <string name="stage_image">Imagen de la escena</string>
 </resources>
