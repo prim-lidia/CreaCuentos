@@ -123,15 +123,15 @@ public class EditTaleFragment extends Fragment {
 
     private void sizeImageView() {
         //Get dimension form imageView
-        ImageView imageView = viewRoot.findViewById(R.id.stageImage);
+
         Display display = getActivity().getWindowManager().getDefaultDisplay();
         float width = display.getWidth();
         float height = display.getHeight();
         float ratioScale = width/height;
         Log.d("ratioScale", ""+ratioScale+" height:"+height);
-        imageView.getLayoutParams().width = Math.round(height*ratioScale)-32-32;
-        imageView.getLayoutParams().height = Math.round(width*ratioScale)-32-32;
-        imageView.requestLayout();
+        imageViewFrontImage.getLayoutParams().width = Math.round(height*ratioScale)-32-32;
+        imageViewFrontImage.getLayoutParams().height = Math.round(width*ratioScale)-32-32;
+        imageViewFrontImage.requestLayout();
     }
 
     public void setTaleView(String taleId){
