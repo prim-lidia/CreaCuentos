@@ -32,4 +32,7 @@
     <string name="save">Guardar</string>
     <string name="stage_text">Texto de la escena</string>
     <string name="stage_image">Imagen de la escena</string>
+    <string name="stage_title">Titulo de la escena</string>
+    <string name="add">Añadir</string>
+    <string name="new_stage">Nueva escena</string>
 </resources>

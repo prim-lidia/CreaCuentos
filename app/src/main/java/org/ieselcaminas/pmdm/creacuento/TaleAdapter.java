@@ -46,8 +46,8 @@ public class TaleAdapter extends ArrayAdapter<Tale> {
             if (imageID!= null && !imageID.equals("")) {
                 ImageView imageView = (ImageView) v.findViewById(R.id.imageView);
                 //Download image from Firebase
-                StorageReference fileRef = FirebaseStorage.getInstance().getReferenceFromUrl(tale.getFrontImage());
                 if(tale.getFrontImage() != null) {
+                    StorageReference fileRef = FirebaseStorage.getInstance().getReferenceFromUrl(tale.getFrontImage());
                     GlideApp.with(context)
                             .load(fileRef)
                             .centerCrop()

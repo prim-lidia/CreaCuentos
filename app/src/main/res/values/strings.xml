@@ -32,7 +32,10 @@
     <string name="delete_confirmation_title">Delete tale?</string>
     <string name="chose_image">Choose image</string>
     <string name="save">Save</string>
-    <string name="image_trans">image transition</string>
+    <string name="image_trans" translatable="false">image transition</string>
     <string name="stage_text">Stage text</string>
     <string name="stage_image">Stage image</string>
+    <string name="stage_title">Stage title</string>
+    <string name="add">Add</string>
+    <string name="new_stage">New Stage</string>
 </resources>

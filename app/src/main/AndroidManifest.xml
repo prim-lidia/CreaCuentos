@@ -22,6 +22,8 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".TaleDetailActivity" />
         <activity android:name=".EditTaleActivity"></activity>
+
+        <service android:name=".UploadImageIntentService" />
     </application>
 
 </manifest>

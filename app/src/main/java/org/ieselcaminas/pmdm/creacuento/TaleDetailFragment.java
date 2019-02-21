@@ -78,8 +78,8 @@ public class TaleDetailFragment extends Fragment {
                 tale = dataSnapshot.getValue(Tale.class);
                 String[] categories = getActivity().getResources().getStringArray(R.array.categories);
                 Log.d("Cuentos", tale.getTitle());
-                StorageReference fileRef = FirebaseStorage.getInstance().getReferenceFromUrl(tale.getFrontImage());
                 if(tale.getFrontImage() != null) {
+                    StorageReference fileRef = FirebaseStorage.getInstance().getReferenceFromUrl(tale.getFrontImage());
                     GlideApp.with(getContext())
                             .load(fileRef)
                             .centerCrop()
