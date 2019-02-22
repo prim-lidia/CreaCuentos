@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -16,6 +17,7 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -43,27 +45,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class EditStageFragmet extends Fragment {
+    private final FirebaseDatabase database = FirebaseDatabase.getInstance();
     public static final int PICK_IMAGE = 12;
     private View viewRoot;
     private StageOptionAdapter stageAdapter;
-    private StorageReference storageRef;
     private Uri filePath;
     private Stage stage;
     private String idStage;
-    private long count;
-    private final FirebaseDatabase database = FirebaseDatabase.getInstance();
     private String taleId;
+    private long count;
     private EditText editTitle;
     private EditText editText;
     private ImageView imageView;
-
-    private ArrayAdapter<String> listAdapter;
+    private ArrayList<String> stages = new ArrayList<String>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         viewRoot = inflater.inflate(R.layout.fragment_edit_stage, container, false);
-        storageRef = FirebaseStorage.getInstance().getReference();
 
         Bundle args = getArguments();
         if (args != null) {
@@ -175,8 +174,8 @@ public class EditStageFragmet extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 count = dataSnapshot.getChildrenCount();
-                ArrayList<String> stages = new ArrayList<String>();
-                listAdapter = new ArrayAdapter<>(getContext(),android.R.layout.simple_list_item_single_choice, stages);
+                stages = new ArrayList<String>();
+                stages.add(getResources().getString(R.string.new_stage));
                 Log.d("Cuentos total escenas", String.valueOf(count));
                 if (idStage == null && count == 0) {
                     DatabaseReference stagesRef =  database.getReference("stages");
@@ -187,7 +186,6 @@ public class EditStageFragmet extends Fragment {
                     for(DataSnapshot item: dataSnapshot.getChildren()){
                         Stage s = item.getValue(Stage.class);
                         stages.add(s.getNumber()+": "+s.getTitle());
-                        listAdapter.notifyDataSetChanged();
                         Log.d("Stages addd", String.valueOf(stages.size()));
                         if(s.getNumber() == 1){
                             stage = s;
@@ -243,12 +241,13 @@ public class EditStageFragmet extends Fragment {
     }
 
     public void openAddStageDialog(){
-
+        //String[] str = new String[listAdapter.getCount()];
+        final String[] str = stages.toArray(new String[stages.size()]);
+        Log.d("Cuentos", str.length+"");
         final Context context = getContext();
-        AlertDialog dialog = new AlertDialog.Builder(context)
+        final AlertDialog dialog = new AlertDialog.Builder(getActivity())
                 .setTitle(context.getString(R.string.stages))
-                .setMessage("")
-                .setSingleChoiceItems(listAdapter, 0, new DialogInterface.OnClickListener() {
+                .setSingleChoiceItems(str, -1, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
@@ -272,6 +271,7 @@ public class EditStageFragmet extends Fragment {
                         }
                 )
                 .create();
+
         dialog.show();
     }
 }

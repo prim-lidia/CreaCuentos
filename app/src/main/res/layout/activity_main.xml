@@ -11,43 +11,58 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <FrameLayout
+
+        <LinearLayout
+            android:id="@+id/create"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
+            android:orientation="vertical"
             android:background="@drawable/gradient_dark_primary">
+
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="190dp"
+                android:layout_marginTop="@dimen/side_margins"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginBottom="16dp"
+                android:src="@drawable/puzzle2" />
 
             <TextView
-                android:id="@+id/labelToCreate"
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginBottom="32dp"
                 android:text="@string/create_label"
                 android:textSize="@dimen/title_size"
-                android:layout_marginBottom="32dp"/>
-        </FrameLayout>
+                android:textColor="@color/icons"/>
+        </LinearLayout>
 
-        <FrameLayout
+        <LinearLayout
+            android:id="@+id/viewTales"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@android:color/darker_gray"
             android:layout_weight="1">
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/darker_gray"/>
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:src="@drawable/personajes" />
             <TextView
-                android:id="@+id/labelToViewTales"
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginBottom="32dp"
                 android:text="@string/view_tales_label"
                 android:textSize="@dimen/title_size"
-                android:layout_marginBottom="32dp">
-            </TextView>
-        </FrameLayout>
+                android:textColor="@color/icons"></TextView>
+        </LinearLayout>
     </LinearLayout>
 
     <ImageButton

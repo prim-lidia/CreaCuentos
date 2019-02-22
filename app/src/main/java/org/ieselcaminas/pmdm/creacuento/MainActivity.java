@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(getIntent());
             }
         });
-        TextView createLabel = findViewById(R.id.labelToCreate);
+        LinearLayout createLabel = findViewById(R.id.create);
         createLabel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        TextView viewTalesLabel = findViewById(R.id.labelToViewTales);
+        LinearLayout viewTalesLabel = findViewById(R.id.viewTales);
         viewTalesLabel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

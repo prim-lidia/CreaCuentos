@@ -3,7 +3,6 @@ package org.ieselcaminas.pmdm.creacuento;
 public class StageOption {
     private String idStage;
     private int number;
-    private String title;
     private String option;
 
     public int getNumber() {
